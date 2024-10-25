@@ -4,6 +4,8 @@ import TextInput from "@/Components/TextInput";
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
+import TableHeading from "@/Components/TableHeading";
 
 export default function Index({ auth, projects, queryParams = null }) {
     queryParams = queryParams || {};
@@ -16,6 +18,21 @@ export default function Index({ auth, projects, queryParams = null }) {
 
     const onKeyPress = (name, e) => {
         e.key === 'Enter' && searchFieldChanged(name, e.target.value);
+    }
+
+    const sortChanged = (name) => {
+        if (name === queryParams.sort_field) {
+            if (queryParams.sort_direction === 'asc') {
+                queryParams.sort_direction = 'desc'
+            } else {
+                queryParams.sort_direction = 'asc'
+            }
+        } else {
+            queryParams.sort_field = name;
+            queryParams.sort_direction = 'asc';
+        }
+
+        router.get(route('project.index'), queryParams);
     }
 
     return (
@@ -33,77 +50,179 @@ export default function Index({ auth, projects, queryParams = null }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700
-                                dark:text-gray-400 border-b-2 border-gray-500">
-                                    <tr className="text-nowrap">
+                            <div className="overflow-auto">
+                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700
+                                    dark:text-gray-400 border-b-2 border-gray-500">
+                                        <tr className="text-nowrap">
 
-                                        <th className="px-3 py-3"></th>
-                                        <th className="px-3 py-3">
-                                            <TextInput 
-                                                className="w-full" 
-                                                placeholder="Project Name"
-                                                defaultValue={queryParams.name}
-                                                onBlur= { e => searchFieldChanged('name', e.target.value) } 
-                                                onKeyPress= { e => onKeyPress('name', e) }
-                                            />
-                                        </th>
-                                        <th className="px-3 py-3">
-                                            <SelectInput 
-                                                className="w-full"
-                                                defaultValue={queryParams.status}
-                                                onChange= {e => searchFieldChanged('status', e.target.value)}
-                                            >
-                                                <option value="">Select Status</option>
-                                                <option value="pending">Pending</option>
-                                                <option value="in_progress">In Progress</option>
-                                                <option value="completed">Completed</option>
-                                            </ SelectInput>
-                                        </th>
-                                        <th className="px-3 py-3"></th>
-                                        <th className="px-3 py-3"></th>
-                                        <th className="px-3 py-3 text-right"></th>
-                                    </tr>
-                                </thead>
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700
-                                dark:text-gray-400 border-b-2 border-gray-500">
-                                    <tr className="text-nowrap">
-                                        <th className="px-3 py-2">ID</th>
-                                        <th className="px-3 py-3">Name</th>
-                                        <th className="px-3 py-3">Status</th>
-                                        <th className="px-3 py-3">Creation Date</th>
-                                        <th className="px-3 py-3">Due Date</th>
-                                        <th className="px-3 py-3">Created By</th>
-                                        <th className="px-3 py-3 text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {projects.data.map((project) => (
-                                        <tr key={project.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td className="px-3 py-2">{project.id}</td>
-                                            <td className="px-3 py-2">{project.name}</td>
-                                            <td className="px-3 py-2">
-                                                <span className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[project.status]}>
-                                                    {PROJECT_STATUS_TEXT_MAP[project.status]}
-                                                </span>
-                                            </td>
-                                            <td className="px-3 py-2 text-nowrap">{project.created_at}</td>
-                                            <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
-                                            <td className="px-3 py-2">{project.createdBy.name}</td>
-                                            <td className="px-3 py-2 text-right">
-                                                <Link href={route('project.edit', project.id)} className="
-                                                font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">
-                                                    Edit
-                                                </Link>
-                                                <Link href={route('project.destroy', project.id)} className="
-                                                font-medium text-red-600 dark:text-red-500 hover:underline mx-1">
-                                                    Delete
-                                                </Link>
-                                            </td>
+                                            <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3">
+                                                <TextInput 
+                                                    className="w-full" 
+                                                    placeholder="Project Name"
+                                                    defaultValue={queryParams.name}
+                                                    onBlur= { e => searchFieldChanged('name', e.target.value) } 
+                                                    onKeyPress= { e => onKeyPress('name', e) }
+                                                />
+                                            </th>
+                                            <th className="px-3 py-3">
+                                                <SelectInput 
+                                                    className="w-full"
+                                                    defaultValue={queryParams.status}
+                                                    onChange= {e => searchFieldChanged('status', e.target.value)}
+                                                >
+                                                    <option value="">Select Status</option>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="in_progress">In Progress</option>
+                                                    <option value="completed">Completed</option>
+                                                </ SelectInput>
+                                            </th>
+                                            <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3 text-right"></th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700
+                                    dark:text-gray-400 border-b-2 border-gray-500">
+                                        <tr className="text-nowrap">
+                                            <TableHeading 
+                                                name="id"
+                                                sort_field={queryParams.sort_field} 
+                                                sort_direction={queryParams.sort_direction} 
+                                                sortChanged={sortChanged}
+                                            >
+                                                ID
+                                            </TableHeading>
+
+                                            <TableHeading 
+                                                name="name"
+                                                sort_field={queryParams.sort_field} 
+                                                sort_direction={queryParams.sort_direction} 
+                                                sortChanged={sortChanged}
+                                            >
+                                                Name
+                                            </TableHeading>
+
+                                            <TableHeading 
+                                                name="status"
+                                                sort_field={queryParams.sort_field} 
+                                                sort_direction={queryParams.sort_direction} 
+                                                sortChanged={sortChanged}
+                                            >
+                                                Status
+                                            </TableHeading>
+
+                                            <TableHeading 
+                                                name="created_at"
+                                                sort_field={queryParams.sort_field} 
+                                                sort_direction={queryParams.sort_direction} 
+                                                sortChanged={sortChanged}
+                                            >
+                                                Creation Date
+                                            </TableHeading>
+
+                                            <TableHeading 
+                                                name="due_date"
+                                                sort_field={queryParams.sort_field} 
+                                                sort_direction={queryParams.sort_direction} 
+                                                sortChanged={sortChanged}
+                                            >
+                                                Due Date
+                                            </TableHeading>
+
+                                            {/* <th onClick={(e) => sortChanged('id')}>
+                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
+                                                    ID
+                                                    <div>
+                                                        <ChevronUpIcon className={
+                                                            "w-4 " + 
+                                                            (
+                                                                queryParams.sort_field === 'id' &&
+                                                                queryParams.sort_direction === 'asc' ?
+                                                                "text-blue-600" : ""
+                                                            )} 
+                                                        />
+                                                        <ChevronDownIcon className={
+                                                            "w-4 -mt-2 " +
+                                                            (
+                                                                queryParams.sort_field === 'id' &&
+                                                                queryParams.sort_direction === 'desc' ?
+                                                                "text-blue-600" : ""
+                                                            )} 
+                                                        />
+                                                    </div>      
+                                                </div>
+                                            </th> */}
+                                            {/* <th onClick={(e) => sortChanged('name')}>
+                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
+                                                     Name
+                                                    <div>
+                                                        <ChevronUpIcon className="w-4" />
+                                                        <ChevronDownIcon className="w-4 -mt-2" />
+                                                    </div>
+                                                </div>                                              
+                                            </th> */}
+                                            {/* <th onClick={(e) => sortChanged('status')}>
+                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
+                                                    Status
+                                                    <div>
+                                                        <ChevronUpIcon className="w-4" />
+                                                        <ChevronDownIcon className="w-4 -mt-2" />
+                                                    </div>
+                                                </div>
+                                            </th> */}
+                                            {/* <th onClick={(e) => sortChanged('created_at')}>
+                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
+                                                    Creation Date
+                                                    <div>
+                                                        <ChevronUpIcon className="w-4" />
+                                                        <ChevronDownIcon className="w-4 -mt-2" />
+                                                    </div>
+                                                </div>
+                                            </th> */}
+                                            {/* <th onClick={(e) => sortChanged('due_date')}>
+                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
+                                                    Due Date
+                                                    <div>
+                                                        <ChevronUpIcon className="w-4" />
+                                                        <ChevronDownIcon className="w-4 -mt-2" />
+                                                    </div>
+                                                </div>
+                                            </th> */}
+                                            <th className="px-3 py-3">Created By</th>
+                                            <th className="px-3 py-3 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {projects.data.map((project) => (
+                                            <tr key={project.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <td className="px-3 py-2">{project.id}</td>
+                                                <td className="px-3 py-2">{project.name}</td>
+                                                <td className="px-3 py-2">
+                                                    <span className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[project.status]}>
+                                                        {PROJECT_STATUS_TEXT_MAP[project.status]}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-2 text-nowrap">{project.created_at}</td>
+                                                <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
+                                                <td className="px-3 py-2">{project.createdBy.name}</td>
+                                                <td className="px-3 py-2 text-right">
+                                                    <Link href={route('project.edit', project.id)} className="
+                                                    font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">
+                                                        Edit
+                                                    </Link>
+                                                    <Link href={route('project.destroy', project.id)} className="
+                                                    font-medium text-red-600 dark:text-red-500 hover:underline mx-1">
+                                                        Delete
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                             <Pagination links={projects.meta.links} />
                         </div>
                     </div>

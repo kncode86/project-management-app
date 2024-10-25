@@ -131,65 +131,6 @@ export default function Index({ auth, projects, queryParams = null }) {
                                                 Due Date
                                             </TableHeading>
 
-                                            {/* <th onClick={(e) => sortChanged('id')}>
-                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
-                                                    ID
-                                                    <div>
-                                                        <ChevronUpIcon className={
-                                                            "w-4 " + 
-                                                            (
-                                                                queryParams.sort_field === 'id' &&
-                                                                queryParams.sort_direction === 'asc' ?
-                                                                "text-blue-600" : ""
-                                                            )} 
-                                                        />
-                                                        <ChevronDownIcon className={
-                                                            "w-4 -mt-2 " +
-                                                            (
-                                                                queryParams.sort_field === 'id' &&
-                                                                queryParams.sort_direction === 'desc' ?
-                                                                "text-blue-600" : ""
-                                                            )} 
-                                                        />
-                                                    </div>      
-                                                </div>
-                                            </th> */}
-                                            {/* <th onClick={(e) => sortChanged('name')}>
-                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
-                                                     Name
-                                                    <div>
-                                                        <ChevronUpIcon className="w-4" />
-                                                        <ChevronDownIcon className="w-4 -mt-2" />
-                                                    </div>
-                                                </div>                                              
-                                            </th> */}
-                                            {/* <th onClick={(e) => sortChanged('status')}>
-                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
-                                                    Status
-                                                    <div>
-                                                        <ChevronUpIcon className="w-4" />
-                                                        <ChevronDownIcon className="w-4 -mt-2" />
-                                                    </div>
-                                                </div>
-                                            </th> */}
-                                            {/* <th onClick={(e) => sortChanged('created_at')}>
-                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
-                                                    Creation Date
-                                                    <div>
-                                                        <ChevronUpIcon className="w-4" />
-                                                        <ChevronDownIcon className="w-4 -mt-2" />
-                                                    </div>
-                                                </div>
-                                            </th> */}
-                                            {/* <th onClick={(e) => sortChanged('due_date')}>
-                                                <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
-                                                    Due Date
-                                                    <div>
-                                                        <ChevronUpIcon className="w-4" />
-                                                        <ChevronDownIcon className="w-4 -mt-2" />
-                                                    </div>
-                                                </div>
-                                            </th> */}
                                             <th className="px-3 py-3">Created By</th>
                                             <th className="px-3 py-3 text-right">Actions</th>
                                         </tr>

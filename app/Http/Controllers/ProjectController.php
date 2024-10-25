@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use stdClass;
 
 class ProjectController extends Controller
 {
@@ -14,10 +15,21 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(10)->onEachSide(1);
+        $query = Project::query();
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+
+        $projects = $query->paginate(10);
 
         return inertia("Project/Index", [
             "projects" => ProjectResource::collection($projects),
+            "queryParams" => request()->query() ?: null,
         ]);
     }
 

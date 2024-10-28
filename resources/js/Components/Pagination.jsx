@@ -5,11 +5,11 @@ import parse from 'html-react-parser';
 export default function Pagination({ links }) {
     return (
         <nav className="text-center mt-4">
-            {links.map((link) => (
+            {links.map((link, index) => (
                 <Link
                     preserveScroll
                     href={link.url || ""}
-                    key={link.label}
+                    key={index}
                     className={
                         "inline-block py-2 px-3 rounded-lg text-black text-xs "
                             + (link.active ? "bg-gray-950 text-white " : " ")

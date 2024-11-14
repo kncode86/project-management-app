@@ -66,7 +66,6 @@ export default function TaskTable({ tasks, success, queryParams = null, hideProj
                             </th>
                             <th className="px-3 py-3">
                                 <SelectInput
-                                    className="w-full"
                                     defaultValue={queryParams.status}
                                     onChange= {e => searchFieldChanged('status', e.target.value)}
                                 >
@@ -147,7 +146,7 @@ export default function TaskTable({ tasks, success, queryParams = null, hideProj
                                 </th>
                                 <td className="px-3 py-2">
                                     <span className=
-                                        {"px-2 py-1 rounded text-white " + 
+                                        {"px-2 py-1 rounded text-nowrap text-white " + 
                                         TASK_STATUS_CLASS_MAP[task.status]}
                                     >
                                         {TASK_STATUS_TEXT_MAP[task.status]}

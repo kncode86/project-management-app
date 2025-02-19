@@ -104,7 +104,7 @@ class TaskController extends Controller
         
         $task->update($data);
 
-        return to_route('project.index')
+        return to_route('task.index')
             ->with('success', 'Task "'. e($task->name) .'" was updated');
     }
 

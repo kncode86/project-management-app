@@ -8,7 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 
 
 export default function Create({ auth, task, projects, users }) {
-        const {data, setData, put, errors, reset} = useForm({
+        const {data, setData, put, errors} = useForm({
             name: task.name || '',
             status: task.status || '',
             description: task.description || '',
